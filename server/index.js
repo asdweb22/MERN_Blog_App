@@ -17,9 +17,14 @@ connectDB()
 
 const app=express()
 
+var corsOptions = {
+    origin: 'http://localhost:5173',
+    methods:"GET, POST",
+    credentials: true,
+  }
 
 // middlewares
-app.use(cors())
+app.use(cors(corsOptions))
 app.use(morgan("dev"))
 app.use(express.json())
 
