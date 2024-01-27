@@ -40,11 +40,13 @@ function MyBlogs() {
                 className="col-md-4 col-lg-3 col-sm-4 col-xs-12"
               >
                 <BlogCard
-                  title={blog.title}
-                  description={blog.description}
-                  image={blog.image}
-                  username={blog.user.username}
-                  time={blog.createdAt}
+                  id={blog._id}
+                  isUser={localStorage.getItem("userId") == blog.user}
+                  title={blog?.title}
+                  description={blog?.description}
+                  image={blog?.image}
+                  username={blog?.user?.username}
+                  time={blog?.createdAt}
                 />
               </div>
             ))

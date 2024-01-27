@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 import {
   Box,
   AppBar,
@@ -15,7 +16,9 @@ import { useNavigate } from "react-router-dom";
 
 function Header() {
   //global state managing using redux
-  const isLogin = useSelector((state) => state.isLogin);
+  let isLogin = useSelector((state) => state.isLogin);
+  isLogin = isLogin || localStorage.getItem("userId");
+
   console.log(isLogin);
 
   const navigate = useNavigate();
@@ -28,8 +31,9 @@ function Header() {
   const handleLogout = () => {
     try {
       dispatch(authActions.logout());
-      alert("logout successfull");
+      toast.success("logout successfull");
       navigate("/login");
+      localStorage.clear();
     } catch (error) {
       console.log(error);
     }

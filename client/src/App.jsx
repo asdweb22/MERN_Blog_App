@@ -9,12 +9,15 @@ import Footer from "./components/Footer";
 import Blogs from "./pages/Blogs";
 import MyBlogs from "./pages/MyBlogs";
 import CreateBlog from "./pages/CreateBlog";
+import BlogDetails from "./pages/BlogDetails";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   return (
     <>
       <Router>
         <Header />
+        <Toaster />
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<Login />} />
@@ -22,6 +25,7 @@ function App() {
           <Route path="/all-blogs" element={<Blogs />} />
           <Route path="/my-blogs" element={<MyBlogs />} />
           <Route path="/create-blog" element={<CreateBlog />} />
+          <Route path="/blog-details/:id" element={<BlogDetails />} />
         </Routes>
         <Footer />
       </Router>

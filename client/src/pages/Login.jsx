@@ -6,6 +6,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { authActions } from "../redux/store";
 import { useDispatch } from "react-redux";
+import toast from "react-hot-toast";
 
 function Login() {
   const navigate = useNavigate();
@@ -38,7 +39,7 @@ function Login() {
       if (data.success) {
         localStorage.setItem("userId", data?.user._id);
         dispatch(authActions.login());
-        alert("User login successfully");
+        toast.success("User login successfully");
         navigate("/all-blogs");
       }
     } catch (error) {

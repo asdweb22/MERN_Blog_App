@@ -1,31 +1,51 @@
-import React, { useState } from "react";
 import { Box, Button, TextField, Typography } from "@mui/material";
-import { Link } from "react-router-dom";
 import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-function CreateBlog() {
-  const id = localStorage.getItem("userId");
+import { useParams } from "react-router-dom";
+
+function BlogDetails() {
   const navigate = useNavigate();
-  const [inputs, setInputs] = useState({
-    title: "",
-    description: "",
-    image: "",
-  });
+  const [blog, setBlog] = useState({});
+  const id = useParams().id;
+  const [inputs, setInputs] = useState({});
+
+  const getblogDetails = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:5000/api/v1/blog/get-blog/${id}`
+      );
+      if (data?.success) {
+        setBlog(data?.singleBlog);
+        setInputs({
+          title: data?.singleBlog.title,
+          description: data?.singleBlog.description,
+          image: data?.singleBlog.image,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getblogDetails();
+  }, [id]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post(
-        "http://localhost:5000/api/v1/blog/create-blog",
+      const { data } = await axios.put(
+        `http://localhost:5000/api/v1/blog/update-blog/${id}`,
         {
           title: inputs.title,
           description: inputs.description,
           image: inputs.image,
-          user: id,
+          //   user: id,
         }
       );
       if (data?.success) {
-        alert("Blog Created");
+        alert("Blog updated");
         navigate("/my-blogs");
       }
     } catch (error) {
@@ -56,7 +76,7 @@ function CreateBlog() {
             textTransform={"uppercase"}
             className="py-3 px-3 text-center"
           >
-            Create Blog
+            Edit Blog
           </Typography>
           <TextField
             placeholder="Enter title"
@@ -86,8 +106,13 @@ function CreateBlog() {
             required
           />
 
-          <Button type="submit" variant="contained" className="mt-4 shadow">
-            Submit
+          <Button
+            type="submit"
+            color="warning"
+            variant="contained"
+            className="mt-4 shadow"
+          >
+            Update
           </Button>
         </Box>
       </form>
@@ -95,4 +120,4 @@ function CreateBlog() {
   );
 }
 
-export default CreateBlog;
+export default BlogDetails;
